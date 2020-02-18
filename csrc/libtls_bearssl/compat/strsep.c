@@ -1,14 +1,35 @@
 #ifndef HAVE_STRSEP
-#include <stddef.h>
 #include <string.h>
-char *strsep(char **sp, char *sep)
+char *strsep(char **s, const char *delim)
 {
-	char *p, *s;
-	if (sp == NULL || *sp == NULL || **sp == '\0') return NULL;
-	s = *sp;
-	p = s + strcspn(s, sep);
-	if (*p != '\0') *p++ = '\0';
-	*sp = p;
-	return s;
+	char *begin, *end;
+	begin = *s;
+	if (!begin) {
+		return 0;
+	}
+	if (delim[0] == '\0' || delim[1] == '\0') {
+		char ch = delim[0];
+		if (ch == '\0') {
+			end = 0;
+		} else {
+			if (*begin == ch) {
+				end = begin;
+			} else if (*begin == '\0') {
+				end = 0;
+			} else {
+				end = strchr(begin + 1, ch);
+			}
+		}
+	} else {
+		end = strpbrk(begin, delim);
+	}
+	if (end) {
+		*end++ = '\0';
+		*s = end;
+	}
+	else {
+		*s = 0;
+	}
+	return begin;
 }
 #endif

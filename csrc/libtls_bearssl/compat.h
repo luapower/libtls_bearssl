@@ -12,10 +12,6 @@ void *reallocarray(void *, size_t, size_t);
 int timingsafe_memcmp(const void *, const void *, size_t);
 #endif
 
-#ifndef HAVE_STRCSPN
-size_t strcspn(const char *s1, const char *s2);
-#endif
-
 #ifndef HAVE_STRSEP
 char *strsep(char **sp, char *sep);
 #endif
