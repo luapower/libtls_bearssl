@@ -1,0 +1,2 @@
+libtl-bearssl 99e1f3 from https://git.sr.ht/~mcf/libtls-bearssl (MIT License)
+requires: bearssl
