@@ -1,2 +1,4 @@
-libtl-bearssl 99e1f3 from https://git.sr.ht/~mcf/libtls-bearssl (MIT License)
-requires: bearssl, pthread
+libtl-bearssl 99edefc from https://git.sr.ht/~mcf/libtls-bearssl (MIT License)
+requires: bearssl
+
+NOTE: shims added in compat/* and includes changed for building with MinGW on Windows.

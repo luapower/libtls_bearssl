@@ -16,14 +16,6 @@ int timingsafe_memcmp(const void *, const void *, size_t);
 char *strsep(char **sp, char *sep);
 #endif
 
-#ifndef HAVE_VASPRINTF
-int vasprintf(char **strp, const char *format, va_list ap);
-#endif
-
-#ifndef HAVE_ASPRINTF
-int asprintf(char **strp, const char *format, ...);
-#endif
-
 #ifndef HAVE_STPCPY
 char* stpcpy(char *dst, const char *src);
 #endif
