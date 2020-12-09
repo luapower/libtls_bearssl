@@ -1,12 +1,19 @@
-#ifndef HAVE_EXPLICIT_BZERO
-#include <stddef.h>
+/*	$OpenBSD: explicit_bzero.c,v 1.4 2015/08/31 02:53:57 guenther Exp $ */
+/*
+ * Public domain.
+ * Written by Matthew Dempsky.
+ */
+
 #include <string.h>
-/* Set LEN bytes of S to 0.  The compiler will not delete a call to
-   this function, even if S is dead after the call.  */
-void explicit_bzero(void *s, size_t len)
+
+__attribute__((weak)) void
+__explicit_bzero_hook(void *buf, size_t len)
 {
-	memset(s, '\0', len);
-	/* Compiler barrier.  */
-	asm volatile ("" ::: "memory");
 }
-#endif
+
+void
+explicit_bzero(void *buf, size_t len)
+{
+	memset(buf, 0, len);
+	__explicit_bzero_hook(buf, len);
+}

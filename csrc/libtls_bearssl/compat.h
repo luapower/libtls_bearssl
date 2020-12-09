@@ -1,5 +1,9 @@
 #include <stddef.h>
 
+#ifndef HAVE_EXPLICIT_BZERO
+void explicit_bzero(void *s, size_t len);
+#endif
+
 #ifndef HAVE_FREEZERO
 void freezero(void *, size_t);
 #endif
@@ -18,8 +22,4 @@ char *strsep(char **sp, char *sep);
 
 #ifndef HAVE_STPCPY
 char* stpcpy(char *dst, const char *src);
-#endif
-
-#ifndef HAVE_EXPLICIT_BZERO
-void explicit_bzero(void *s, size_t len);
 #endif

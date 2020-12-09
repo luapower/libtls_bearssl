@@ -21,7 +21,8 @@
 #include <stdlib.h>
 #include "compat.h"
 
-void freezero(void *ptr, size_t sz)
+void
+freezero(void *ptr, size_t sz)
 {
 	/* This is legal. */
 	if (ptr == NULL)

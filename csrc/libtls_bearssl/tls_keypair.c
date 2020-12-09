@@ -141,6 +141,10 @@ tls_keypair_set_cert_mem(struct tls_keypair *keypair, struct tls_error *error,
 			goto err;
 		}
 	}
+	if (chain_len == 0) {
+		tls_error_setx(error, "empty certificate chain");
+		goto err;
+	}
 
 	keypair->chain = chain;
 	keypair->chain_len = chain_len;
@@ -328,8 +332,14 @@ tls_keypair_check(struct tls_keypair *keypair, struct tls_error *error)
 	unsigned char kbuf[BR_EC_KBUF_PUB_MAX_SIZE];
 	int rv = -1, ret;
 
-	if (keypair->chain_len == 0)
-		return 0;
+	if (keypair->key_type == 0) {
+		tls_error_setx(error, "incomplete key pair; missing private key");
+		return -1;
+	}
+	if (keypair->chain_len == 0) {
+		tls_error_setx(error, "incomplete key pair; missing certificate chain");
+		return -1;
+	}
 
 	cert = &keypair->chain[0];
 	br_x509_decoder_init(&xc, NULL, NULL);

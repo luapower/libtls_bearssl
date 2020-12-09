@@ -1,4 +1,4 @@
-/* $OpenBSD: tls.c,v 1.84 2020/01/20 08:39:21 jsing Exp $ */
+/* $OpenBSD: tls.c,v 1.85 2020/05/24 15:12:54 jsing Exp $ */
 /*
  * Copyright (c) 2014 Joel Sing <jsing@openbsd.org>
  *
@@ -228,7 +228,8 @@ tls_new(void)
 int
 tls_configure(struct tls *ctx, struct tls_config *config)
 {
-	int rv = -1;
+	struct tls_keypair *kp;
+	int rv = -1, required;
 
 	if (config == NULL)
 		config = tls_config_default;
@@ -242,8 +243,13 @@ tls_configure(struct tls *ctx, struct tls_config *config)
 	ctx->config = config;
 	ctx->keypair = config->keypair;
 
-	if (tls_keypair_check(ctx->keypair, &ctx->error) != 0)
-		goto err;
+	required = (ctx->flags & TLS_SERVER) != 0;
+	for (kp = ctx->keypair; kp; kp = kp->next) {
+		if (kp->key_type == 0 && kp->chain_len == 0 && !required)
+			continue;
+		if (tls_keypair_check(kp, &ctx->error) != 0)
+			goto err;
+	}
 
 	rv = 0;
 
