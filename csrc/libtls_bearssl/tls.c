@@ -862,3 +862,4 @@ tls_close(struct tls *ctx)
 	errno = 0;
 	return (rv);
 }
+
